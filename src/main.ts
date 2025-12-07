@@ -5,10 +5,14 @@ import {
   ClassSerializerInterceptor,
   Logger,
 } from '@nestjs/common';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet());
+  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
