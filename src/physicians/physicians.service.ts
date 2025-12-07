@@ -1,4 +1,3 @@
-// src/physicians/physicians.service.ts
 import {
   Injectable,
   ConflictException,
@@ -16,7 +15,6 @@ import { Physician } from './entities/physician.entity';
 
 @Injectable()
 export class PhysiciansService {
-  // Observability: Logger initialized with context
   private readonly logger = new Logger(PhysiciansService.name);
 
   constructor(
@@ -41,7 +39,6 @@ export class PhysiciansService {
     });
 
     try {
-      // 3. Persist to DB
       const savedPhysician = await this.physicianRepository.save(newPhysician);
 
       // this.logger.log(`New physician registered: ${savedPhysician.id}`);

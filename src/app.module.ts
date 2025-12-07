@@ -3,8 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Physician } from './physicians/entities/physician.entity';
 import { AuthModule } from './auth/auth.module';
 import { PhysiciansModule } from './physicians/physicians.module';
@@ -40,9 +38,8 @@ import { PhysiciansModule } from './physicians/physicians.module';
     AuthModule,
     PhysiciansModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

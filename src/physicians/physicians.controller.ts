@@ -12,11 +12,8 @@ export class PhysiciansController {
 
   @Post('register')
   async register(@Body() createPhysicianDto: CreatePhysicianDto) {
-    // Service handles hashing and DB saving
     const physician = await this.physiciansService.create(createPhysicianDto);
 
-    // Architect Note: NEVER return the password or internal salts
-    // We rely on Global Interceptors or manual sanitization here
     return {
       id: physician.id,
       email: physician.email,
@@ -25,13 +22,10 @@ export class PhysiciansController {
   }
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt')) // Protects route
+  @UseGuards(AuthGuard('jwt'))
   async getProfile(@GetCurrentUser('userId') userId: string) {
-    // Fetch fresh data from DB to ensure we don't return stale token data
     const physician = await this.physiciansService.findById(userId);
 
-    // Explicit Serialization (Or use ClassSerializerInterceptor)
-    // We MUST prevent sending the hashed password or refresh token hash back
     return {
       id: physician.id,
       fullName: physician.fullName,

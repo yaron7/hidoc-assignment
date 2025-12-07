@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b3f8f9e0-1234-5678-9abc-def012345678",
     "name": "Clinic API",
-    "description": "Collection for testing the Clinic Management API.\nIncludes Auth flow automation.",
+    "description": "Final collection with Secure HttpOnly Cookies and Protected Logout.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"dr.house@clinic.com\",\n    \"fullName\": \"Gregory House\",\n    \"password\": \"SuperSecret1!\",\n    \"medicalLicenseId\": \"LIC-998877\"\n}",
+          "raw": "{\n    \"email\": \"dr.strange@clinic.com\",\n    \"fullName\": \"Stephen Strange\",\n    \"password\": \"SuperSecret1!\",\n    \"medicalLicenseId\": \"LIC-123456\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -43,8 +43,7 @@
               "var jsonData = pm.response.json();",
               "if (jsonData.accessToken) {",
               "    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
-              "    pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);",
-              "    console.log(\"Tokens captured and saved to variables.\");",
+              "    console.log(\"Login Successful. Access Token stored.\");",
               "}"
             ],
             "type": "text/javascript"
@@ -56,7 +55,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"dr.house@clinic.com\",\n    \"password\": \"SuperSecret1!\"\n}",
+          "raw": "{\n    \"email\": \"dr.strange@clinic.com\",\n    \"password\": \"SuperSecret1!\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -114,8 +113,43 @@
               "var jsonData = pm.response.json();",
               "if (jsonData.accessToken) {",
               "    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
-              "    pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);",
-              "    console.log(\"Tokens rotated and updated.\");",
+              "    console.log(\"Token Refreshed. New Access Token stored.\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/refresh",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "refresh"
+          ]
+        },
+        "description": "Sends the HttpOnly Cookie automatically. No Bearer Header needed."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    pm.collectionVariables.set(\"accessToken\", \"\");",
+              "    console.log(\"Logged out. Access Token cleared from variables.\");",
               "}"
             ],
             "type": "text/javascript"
@@ -128,7 +162,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "{{refreshToken}}",
+              "value": "{{accessToken}}",
               "type": "string"
             }
           ]
@@ -136,13 +170,13 @@
         "method": "POST",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/auth/refresh",
+          "raw": "{{baseUrl}}/auth/logout",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "auth",
-            "refresh"
+            "logout"
           ]
         }
       },
@@ -157,11 +191,6 @@
     },
     {
       "key": "accessToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "refreshToken",
       "value": "",
       "type": "string"
     }
