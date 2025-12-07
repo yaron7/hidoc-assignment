@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b3f8f9e0-1234-5678-9abc-def012345678",
     "name": "Clinic API",
-    "description": "Final collection with Secure HttpOnly Cookies and Protected Logout.",
+    "description": "Collection for testing the Clinic Management API.\nIncludes Auth flow automation.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
